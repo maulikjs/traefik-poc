@@ -1,0 +1,45 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: traefik-ingress-controller
+  namespace: proxy-poc
+  labels:
+    k8s-app: traefik-ingress-lb
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      k8s-app: traefik-ingress-lb
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: traefik-ingress-lb
+        name: traefik-ingress-lb
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: config
+        configMap:
+          name: traefik-conf
+      containers:
+      - image: quay.io/maulikjs/traefik:v1.7.5-alpine
+        name: traefik-ingress-lb
+        imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: "/config"
+          name: "config"
+        ports:
+        - containerPort: 8000
+        - containerPort: 8080
+        args:
+        - --web
+        - --kubernetes
+        - --configfile=/config/traefik.toml

@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: proxy-poc
+  name: traefik-conf
+data:
+  traefik.toml: |
+       defaultentrypoints = ["http"]
+       debug = true
+       logLevel = "INFO"
+
+       [api]
+       dashboard = true
+       entrypoint = "auth_api"
+
+       [wss]
+       protocol = "http"
+
+       [entryPoints.http]
+       address = "127.0.0.1:8000"
+
+       [entryPoints.auth_api]
+       address = "127.0.0.1:8099"
+
+       [entryPoints.auth_api.auth.basic]
+       users = [ "abc:$apr1$eS/j3kum$q/X2khsIEG/bBGsteP.x./",]
+
+       [etcd]
+       endpoint = "example-etcd-cluster-client:2379"
+       prefix = "/traefik/"
+       useapiv3 = true
+       watch = true
+
+
+  # [entryPoints.http]
+  # address = "127.0.0.1:8000"
+
+  # [entryPoints.auth_api]
+  # address = "127.0.0.1:8099"
+  #
+  # [entryPoints.auth_api.auth.basic]
+  # users = [ "abc:$apr1$eS/j3kum$q/X2khsIEG/bBGsteP.x./",]
+
+
+
+  # # traefik.toml
+  # logLevel = "DEBUG"
+  # defaultEntryPoints = ["http"]
+  # [entryPoints]
+  #   [entryPoints.http]
+  #   address = ":8000"
+  # [kubernetes]
+  # [web]
+  # address = ":8080"
+  # #For etcd KV store (traefik v1.5.0-rc3 or higher)
+  # [etcd]
+  # endpoint = ""
+  # watch = true
+  # prefix = "/hub"
