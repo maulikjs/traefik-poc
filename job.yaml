@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: storeconfig
-        image: quay.io/maulikjs/traefik:v1.7.5-alpine
+        image: quay.io/maulikjs/traefik:v1.7.26-alpine
         imagePullPolicy: IfNotPresent
         args: [ "storeconfig", "-c", "/etc/traefik/traefik.toml" ]
         volumeMounts:

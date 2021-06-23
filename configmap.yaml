@@ -6,32 +6,39 @@ metadata:
   name: traefik-conf
 data:
   traefik.toml: |
-       defaultentrypoints = ["http"]
-       debug = true
-       logLevel = "INFO"
+    debug = true
+    logLevel = "INFO"
+    defaultentrypoints = [ "http", "https"]
 
-       [api]
-       dashboard = true
-       entrypoint = "auth_api"
+    [api]
+    dashboard = true
+    entrypoint = "auth_api"
 
-       [wss]
-       protocol = "http"
+    [wss]
+    protocol = "http"
 
-       [entryPoints.http]
-       address = "127.0.0.1:8000"
+    [etcd]
+    username = ""
+    password = ""
+    endpoint = "example-etcd-cluster-client:2379"
+    prefix = "/traefik/"
+    useapiv3 = true
+    watch = true
 
-       [entryPoints.auth_api]
-       address = "127.0.0.1:8099"
+    [entryPoints.http]
+    address = "0.0.0.0:8080"
 
-       [entryPoints.auth_api.auth.basic]
-       users = [ "abc:$apr1$eS/j3kum$q/X2khsIEG/bBGsteP.x./",]
+    [entryPoints.https]
+    address = "0.0.0.0:8081"
 
-       [etcd]
-       endpoint = "example-etcd-cluster-client:2379"
-       prefix = "/traefik/"
-       useapiv3 = true
-       watch = true
+    [entryPoints.auth_api]
+    address = "0.0.0.0:8099"
 
+    [entryPoints.auth_api.auth.basic]
+    users = [ "abc:$apr1$a4hgl/yM$Dq4i/FSkAzOC7Uj55xEMD/",]
+  # [entryPoints.foo.auth]
+  #   [entryPoints.auth_api.auth.basic]
+  #     users = [ "abc:$apr1$eS/j3kum$q/X2khsIEG/bBGsteP.x./",]
 
   # [entryPoints.http]
   # address = "127.0.0.1:8000"

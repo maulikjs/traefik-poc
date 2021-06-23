@@ -30,15 +30,17 @@ spec:
         configMap:
           name: traefik-conf
       containers:
-      - image: quay.io/maulikjs/traefik:v1.7.5-alpine
+      - image: quay.io/maulikjs/traefik:v1.7.26-alpine
         name: traefik-ingress-lb
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: "/config"
           name: "config"
         ports:
-        - containerPort: 8000
+        - containerPort: 8081
         - containerPort: 8080
+        - containerPort: 80
+        - containerPort: 8099
         args:
         - --web
         - --kubernetes
