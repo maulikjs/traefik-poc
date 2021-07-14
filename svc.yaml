@@ -2,11 +2,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: traefik-ingress-service
+  name: traefik-proxy
   namespace: proxy-poc
 spec:
   selector:
-    k8s-app: traefik-ingress-lb
+    k8s-app: traefik-proxy
   ports:
     - name: admin
       protocol: TCP
